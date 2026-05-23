@@ -1,259 +1,244 @@
-# CRICK — Ecosystem
+# CRICK Ecosystem
+### The Biology Decade: From the Matmul Ceiling to the Pair-Tensor Era
 
-*The Central Dogma in Silicon, in Software, in Strategy. A unified stack from the col(F)/ker(F) genetic-boundary mathematics through the pair-tensor-native silicon through the canonical biology AI software to the unit economics of population-scale genomic medicine.*
-
----
-
-## The One-Page Thesis
-
-Biology is a one-way col(F)/ker(F) information system. DNA → RNA → protein → function is the directed flow; the genome is col(F); the epigenome, the wobble degeneracy of the genetic code, and the conformational microstates of folding are ker(F). The deep-learning architectures that have come to dominate biology — AlphaFold 3, Boltz-2, Chai-1, Protenix, HelixFold3, RFdiffusion3, ESM3, RhoFold+, RNA-FM, RiNALMo, AIDO.RNA, Evo 2, State, Stack, scGPT, Geneformer — are the operational realization of that flow, all converging on the same intermediate data structure: the N×N×D pair tensor refined under SE(3)-equivariant triangle attention with diffusion-denoising integration.
-
-Those workloads are running on substrates designed for language-model matrix multiplication. The pair tensor is packed into 2D matmul tiles; SE(3) rotations are emulated by polynomial Taylor expansions in a separate vector unit; diffusion sampling is repeated full forward passes through HBM; long-context Hyena is approximated as long convolutions on the matmul path; CRISPR rank-one updates are handled as full re-inferences. Each is an emulation. Each pays a 3–12× overhead vs. the natural cost of the underlying operation. The frontier biology training run costs $40–60M in compute; the inference price of a saturation mutational scan is ~$40; cell-type-specific genomic medicine sits below the cost line for population deployment. All three numbers are limits of the substrate, not the science.
-
-**CRICK is the substrate, the software stack, and the strategic playbook for the biology decade.** Crick-1 is the silicon — pair-tensor-native, SE(3)-equivariant, diffusion-iterating, with dedicated hardware for the seven biology-specific primitives the CRICK framework identifies. CRICK-RNA / CRICK-DNA / CRICK-Protein / CRICK-Cell are the canonical open-source software modules covering the full central-dogma pipeline. CRICK-IR is the MLIR-dialect compiler that lowers PyTorch / JAX biology models onto Crick-1. The economic consequence: a 4–12× per-chip advantage on standard biology workloads (AlphaFold 3, Boltz-2, Evo 2, RNA structure), 20–100× on rank-one-update workloads (CRISPR screening, saturation scans, cell-type-specific expression), at ~11.5 MW per 16K-chip cluster vs. ~60 MW for matmul-equivalent throughput. Pharma R&D productivity, currently in the late stages of Eroom’s Law, is the principal beneficiary.
+> *"The matmul era of biology compute is not failing. It is finishing. Biology's decade is the next one, on the substrate the workload demands."*
 
 ---
 
-## The Stack
+## The Single Thesis
 
-The ecosystem is six layers, each with a defined interface to the layer above and below.
+Biology AI is the next frontier compute wave — and it is structurally mismatched with the silicon that currently runs it.
 
-### Layer 0 — Mathematical foundations
+Every major biology AI breakthrough of 2024–2026 — AlphaFold 3 (Google DeepMind, *Nature* 2024), Boltz-2 (MIT + Recursion, 2025), Evo 2 (Arc Institute + NVIDIA, *Nature* 2026), RFdiffusion3 (November 2025), State and Stack virtual-cell models (Arc Institute, 2025–2026) — converges on the same five computational primitives. None of those five is a matrix multiplication. Yet every one runs today on GPU and TPU silicon designed to maximize matrix multiplication. The mismatch costs **3–12× per operation**, compounding across workloads. It does not shrink with process-node improvements. It is structural.
 
-Seven canonical objects, each over a century or half-century old, each newly load-bearing:
-
-- **Watson–Crick pairing (1953)** — the pair tensor as the native data structure of biology. The double helix is a 2-D pair tensor with a 4/16 sparsity prior; AlphaFold’s Pairformer is its functional generalization.
-- **Anfinsen (1972, Nobel)** — sequence determines structure: structure is the col(F) extracted from the sequence; folding is the projection that collapses ~10³⁰⁰ Levinthal microstates to a native ensemble in milliseconds.
-- **Crick wobble (1966)** — the 64→20 codon surjection with 44 dimensions of synonymous-codon ker(F): nature’s error-correcting code, with the most degeneracy where mutational pressure is highest.
-- **CRISPR-Cas9 (Doudna & Charpentier, 2014, Nobel 2020)** — the programmable Sherman–Morrison rank-one update on the genomic Fisher matrix; one position changed, the rest of the 3.2-billion-base genome intact.
-- **Banach (1922)** — the contraction-mapping fixed-point theorem; AlphaFold recycling and reverse-time diffusion SDE integration are its operational realizations.
-- **Sherman–Morrison (1950)** — rank-one matrix inverse update; the closed-form linear algebra of a single CRISPR edit on a pair-tensor representation.
-- **Volder (1959) + Walther (1971) CORDIC** — shift-and-add iterative arithmetic for rotations, transcendentals, hyperbolic functions, and FFT; SE(3) equivariance and Hyena long-convolution are its operational realizations.
-
-The framework’s identification: the central dogma is the deepest col(F)/ker(F) system in biology; the genome is col(F); the epigenome is heritable ker(F); the chip’s job is to make col(F) extraction operationally feasible at scale.
-
-### Layer 1 — Silicon: the Banach-1 → Volder-1 → Crick-1 lineage
-
-Three chips, three primitive identifications, one substrate philosophy.
-
-- **Banach-1 (2026)** — promotes fixed-point iteration to the architectural primitive on a matmul substrate. The Fixed-Point Compute Unit (FPCU), Anderson Acceleration Block (AAB), and Contraction Monitor (CM) turn AlphaFold recycling, deep equilibrium models, and reverse-time SDE integration into first-class hardware ops. 384 MB SRAM, 288 GB HBM3e, 12.3 PFLOPS FP4.
-- **Volder-1 (2026)** — collapses the matmul into the CORDIC iteration. Rotation is the universal computational operation; circular-mode CORDIC handles SE(3) rotations and attention; hyperbolic-mode handles Lorentz, Möbius, and Poincaré-ball geometries. 645 MB SRAM, 9.6 TB/s HBM3e, 9.8 PFLOPS FP4-equivalent on the CORDIC datapath. FFT is a CORDIC operation by construction.
-- **Crick-1 (2026)** — adds the **Pair-Tensor Iteration Unit (PTIU)** as the native operation for biology. 128 PTIUs on a TSMC N2P (2nm) die, ~220 B transistors, ~840 mm², CoWoS-L with HBM4. Seven biology-specific hardware blocks: **TAE** (Triangle Attention Engine), **SFB** (SE(3) Frame Update Block), **DDU** (Diffusion Denoiser Unit), **HFE** (Hyena Filter Engine), **SMEU** (Sherman-Morrison Edit Unit), **WCC** (Wobble Code Cache, 4 GB on-chip), **MMC** (Methylation Marker Cache, 3 GB on-chip). 873 MB on-chip SRAM (the largest of any non-wafer-scale accelerator), 384 GB HBM4 at 12.8 TB/s, 4.0 TB/s Ethernet-native scale-up.
-
-Per 16K-chip cluster: 134 PFLOPS-eq pair-tensor FP4, 6.29 PB HBM4 aggregate, 14.3 PB on-chip SRAM, 11.5 MW cluster power. Hybrid deployment is the operating model — Crick-1 for biology, Volder-1 for geometric / hyperbolic workloads, Banach-1 for the Euclidean transformer bulk, all sharing the Ethernet scale-up fabric.
-
-### Layer 2 — CRICK-IR: the compiler
-
-MLIR dialect extending the Volder Intermediate Representation (VIR) with three first-class IR constructs: the **pair tensor**, the **SE(3) frame**, and the **col(F)/ker(F) tensor attribute**. The compiler ingests standard PyTorch / JAX biology models (AlphaFold 3, Boltz-2, RFdiffusion3, Evo 2, RiNALMo, State, Stack, scGPT) and lowers them to PTIU invocations with explicit equivariance, iteration depth, and convergence parameters. The central biology-specific optimization is **central-dogma pipeline lowering** — recognizing the DNA → RNA → protein → structure → function multi-stage workflow at the IR level and scheduling inter-stage data movement to minimize HBM traffic.
-
-Three new operating modes beyond the seven inherited from Banach-1 / Volder-1:
-- **Mode H — Pair-Tensor Native** (AlphaFold 3 / Boltz-2 / Chai-1 / Protenix / HelixFold3 class).
-- **Mode I — SE(3) Equivariant** (RFdiffusion, RFdiffusion3, FrameFlow, FoldFlow).
-- **Mode J — Long-Context Genomic** (Evo 2 7B / 20B / 40B at up to 1 M-token context per chip).
-
-### Layer 3 — Foundation models (canonical, open or open-weights-tracked)
-
-The CRICK ecosystem exposes the full state-of-the-art across the four canonical biology modalities.
-
-- **DNA / Genomic**: Evo 2 (40 B, 1 M-context, *Nature* 2026), Evo, HyenaDNA, Nucleotide Transformer, Caduceus, Borzoi, Enformer, CodonFM (Arc + NVIDIA, 2026).
-- **RNA**: RNA-FM, RhoFold+, NuFold, DRfold/DRfold2, trRosettaRNA, RiNALMo (650 M), AIDO.RNA (1.6 B, SOTA on 24/26 RNA understanding tasks), ERNIE-RNA, Uni-RNA, UTR-LM, CaLM, RNAGenesis, GenerRNA, gRNAde (ICLR 2025 spotlight, 3D inverse design).
-- **Protein**: AlphaFold 3 (*Nature* 2024), Boltz-1/Boltz-2 (MIT + Recursion 2025), Chai-1, Protenix, HelixFold3, RoseTTAFold All-Atom / RoseTTAFoldNA, RFdiffusion / RFdiffusion3, FrameFlow, FoldFlow, ESM3, Chroma, ProteinMPNN.
-- **Cell**: scGPT (33 M cells), Geneformer, scFoundation, CellFM (100 M cells), Universal Cell Embeddings (UCE), GeneCompass, State (Arc 2025), Stack (Arc 2026), Tahoe-100M, GEARS.
-
-### Layer 4 — Applications
-
-- **Therapeutic discovery**: target identification, hit-to-lead, protein–ligand affinity (Boltz-2 Affinity Module), de novo binder design (RFdiffusion3), allosteric and cryptic-pocket discovery.
-- **Genomic medicine**: CRISPR off-target screening (SMEU-native), saturation mutational scans, base- and prime-editor optimization, variant pathogenicity at ClinVar / GWAS resolution.
-- **mRNA / RNA therapeutics**: 5′ and 3′ UTR optimization, codon usage tuned to organism + tissue + tRNA pool (WCC-native), modified-nucleoside (Ψ, m¹Ψ, m⁵C) substitution, LNP composition design.
-- **Cell-state engineering**: virtual-cell perturbation prediction (MMC-native), cell-type-specific pharmacogenomics, CAR-T and iPSC reprogramming design, lineage-aware therapeutics.
-- **Diagnostics**: whole-proteome variant scanning, splice-altering variant interpretation, cell-type expression deconvolution from bulk samples.
-- **Manufacturing**: bioprocess optimization, host strain engineering for biologics, AAV / LNP titer prediction.
-
-### Layer 5 — Deployment
-
-Hybrid cluster: Crick-1 for biology, Volder-1 for geometric, Banach-1 for Euclidean transformer bulk, on Ethernet-native scale-up (Maia 200 ATL-compatible). Customer deployment options: on-prem cluster, hyperscaler-hosted (AWS / GCP / Azure / Oracle), pharma-private regional, sovereign biomedical compute.
+**CRICK** is the substrate, software, and strategic playbook built for the workload these architectures actually perform.
 
 ---
 
-## Market Perspective
+## The Five Structural Overheads
 
-### TAM and segments
+| Operation | What it is | Matmul overhead | Principal workload |
+|-----------|-----------|----------------|--------------------|
+| **Pair tensor** | N×N pairwise residue-residue representation | 4–6× per Pairformer block | AlphaFold 3, Boltz-2, all structure-prediction |
+| **SE(3) equivariance** | Exact rotation-translation symmetry for 3D structure | 2–3× per structure module | Protein folding, de novo design |
+| **Diffusion denoising** | Reverse-time sampling, 200–500 steps | 12–20× on full de novo design | RFdiffusion3, AlphaFold 3 generation |
+| **Long-context genomics** | Up to 1M DNA bases in a single pass | 5–10× on Evo-class inference | Evo 2 40B, full-genome modeling |
+| **CRISPR rank-one edit** | Updating a protein representation for one mutation | **80–100×** on mutational scanning | CRISPR screening, drug variant scans |
 
-Biology AI compute is currently ~5–8% of frontier AI compute spend (2025) and tracking to 12–18% by 2028 as AlphaFold-class structure prediction, Evo-class genomic foundation models, and virtual-cell models absorb an increasing fraction of pharma R&D budgets and hyperscaler training cycles. The four addressable buyer segments:
-
-1. **Pharma R&D** (top 20 + next-50 mid-pharma) — currently ~$250 B/yr global R&D spend with declining productivity (Eroom’s Law: real cost per FDA-approved drug doubles every ~9 years since 1950). AI-native biology compute is the principal mechanism that has been hypothesized to invert that trend. Per-pharma annual compute budget for biology AI: $50–500 M, growing 40–60% CAGR.
-2. **Foundation-model labs and AI biotech** — Isomorphic Labs, Recursion, Insilico Medicine, Schrödinger, Generate Biomedicines, Cradle, Profluent, EvolutionaryScale, Iambic, Inceptive, Latent Labs, Chai Discovery. Compute-intensive by design; the AlphaFold 3 / Boltz / RFdiffusion training-class workload is the lifeblood. Per-lab annual compute: $20–200 M.
-3. **Hyperscalers and cloud** — NVIDIA BioNeMo, AWS HealthOmics, Google Cloud Life Sciences, Azure Genomics, Oracle Cerner. Compute supply, increasingly co-developed with chip and software vendors. The ecosystem-level move is to become the **default biology backend** of one or more hyperscalers.
-4. **Sovereign biomedical compute and academic** — NIH / NHGRI, EMBL-EBI, Wellcome Sanger, RIKEN, BGI, KAUST. Lower per-account spend, higher policy leverage, key to dataset access and clinical validation.
-
-### Value chain
-
-Six links, with the economic rent migrating up the stack as the industry matures:
-
-1. Process node (TSMC N2 / N2P / N2X) — commoditizing, ~3% of substrate-era value.
-2. Packaging and HBM (CoWoS-L, HBM3e/HBM4) — bottlenecked, ~15%.
-3. Compute die (Crick-1, Volder-1, Banach-1, GB300, TPU v7, Trainium3, WSE-3) — ~25%.
-4. Compiler and software stack (CRICK-IR, BioNeMo, JAX/PyTorch ecosystem) — ~20%, rising.
-5. Foundation models (AlphaFold 3, Boltz-2, Evo 2, RiNALMo, AIDO.RNA, State, Stack) — ~15%, rising fastest.
-6. Applications and data (clinical workflows, pharma pipelines, diagnostics deployments) — ~22%, the eventual rent capture.
-
-CRICK’s positioning: own the substrate (3, partial 2), the compiler (4), the open-source software (5), and partner up the value chain for 6. This is the **NVIDIA × CUDA × Hugging Face combined** pattern adapted to biology.
-
-### Competitive map
-
-The eight comparable substrates on biology workloads:
-
-| Substrate | Primary primitive | Biology-effective $/TFLOPS-eq-W | Strategic posture |
-|---|---|---|---|
-| **Crick-1** | Pair-tensor iteration | **~$0.18** | Biology-native, full stack |
-| Volder-1 | CORDIC rotation | ~$0.32 | Geometric / hyperbolic |
-| Banach-1 | Fixed-point iteration | ~$0.50 | Convergent transformers |
-| NVIDIA GB300 | Matmul | ~$0.78 | General-purpose dominance |
-| AWS Trainium3 | Matmul | ~$0.35 | Cloud-captive training |
-| TPU v7 Ironwood | Matmul | ~$0.42 | Inference-optimized |
-| Cerebras WSE-3 | Matmul (wafer) | ~$0.61 | Long-context niche |
-| Microsoft Maia 200 | Matmul | ~$0.55 | Azure-captive |
-
-NVIDIA owns ~85% of the current frontier biology compute install base via raw GPU dominance plus the BioNeMo platform; that share is the principal asset under attack. The competitive question is not whether biology AI silicon emerges (Cerebras, Groq, SambaNova, Tenstorrent, Etched, and the hyperscaler ASICs all attest to demand), but whether the **substrate-algorithm co-design** thesis is correctly architected — and the pair tensor + SE(3) + diffusion + Hyena + Sherman-Morrison identification is the bet.
-
-### Unit economics
-
-Three before/after numbers that anchor the ROI calculation:
-
-| Workload | Matmul-era (GB300 cluster) | Crick-1 cluster | Ratio |
-|---|---|---|---|
-| AlphaFold 3 frontier training run | $40–60 M | $6–10 M | 6× |
-| Saturation mutational scan (300-residue protein) | ~$40 / scan, ~10 min wall-clock | ~$0.50 / scan, ~14 min single chip | 80× |
-| 16K-chip cluster power for equivalent biology throughput | ~60 MW | 11.5 MW | 5× |
-| Whole-genome CRISPR off-target screen (10⁹ guides) | ~$2.4 M / run | ~$30K / run | 80× |
-| Cell-type-specific gene expression at population scale (10⁶ individuals × 50 tissues) | infeasible | ~$200 M one-time | unlocks |
-
-The third row is the strategic differentiator. The first row sells to the AI-biotech and pharma-R&D segments. The second and fourth rows unlock workloads that don’t currently exist as commercial products. The fifth row is the population-genomic-medicine business line that no current substrate enables.
-
-### Moats
-
-Five compounding advantages, each with a defined time-to-replicate.
-
-1. **Substrate-algorithm co-design** — the pair tensor / SE(3) / diffusion / Hyena / Sherman-Morrison identification matched to dedicated hardware blocks. Time to replicate by NVIDIA Rubin-class via 3D systolic-array extensions: ~3–4 years from architectural decision. Net moat window: 2026–2029.
-2. **Compiler / IR** — CRICK-IR’s pair-tensor and SE(3) frame as first-class IR constructs; the col(F)/ker(F) tensor-attribute routing pattern. CUDA-equivalent ecosystem inertia compounds with each year of biology-AI developer adoption.
-3. **Open-source software ecosystem** — CRICK-RNA / DNA / Protein / Cell as canonical, reproducible, benchmarked deployment of every frontier biology model with first-class Crick-1 backends. The Hugging Face × PyTorch × Linux pattern: dominance via developer surplus, not closed IP.
-4. **Data and benchmark gravity** — partnership commitments with RNAcentral (release 26, 45 M sequences, 52 expert databases), Rfam, PDB, AlphaFold Protein Structure Database, Tahoe-100M, ENCODE, Human Cell Atlas. The benchmark-and-leaderboard control point that determines which model wins which capability claim.
-5. **Pharma and clinical deployment partnerships** — co-development with top-5 pharma, top-5 AI biotech, and 2–3 hyperscalers; design wins in 3–5 sovereign biomedical compute projects (NHS, EU-1+ Million Genomes, Japan AMED, KAUST, NIH All of Us). Each partnership is a 5–10-year commitment with single-digit-percent compute share defended by switching cost.
-
-### Adoption curve
-
-- **2026 Q3** — Crick-1 first-silicon tape-out; CRICK-IR α; CRICK-RNA β; design-win count target 3.
-- **2027 H1** — Volume production; CRICK-IR 1.0; full CRICK-RNA / DNA / Protein / Cell open-source releases; design-win count target 12.
-- **2028** — Matmul-era biology compute hits the economic ceiling (P7). 30–40% of frontier biology training runs on Crick-1-class silicon. First FDA-cleared diagnostic incorporating whole-proteome saturation scanning (P2). Pharma R&D productivity inflection visible in pipeline KPIs.
-- **2029** — Cell-type-specific pharmacogenomics commercial deployment (P3). Hybrid clusters (Crick + Volder + Banach + general GPU) become the standard biology compute pattern.
-- **2030** — Integrated central-dogma compiler target as the default biology AI deployment (P5). Crick-2 successor in development with non-coding-RNA-regulation and 3D-chromatin-architecture caches.
+These overheads are **architectural, not nodal**. Moore's Law applies to transistor density. It does not apply to structural mismatch.
 
 ---
 
-## The Modules
+## Competitive Landscape: CRICK vs. 10 SOTA Biology AI Labs
 
-Each module is open-source software with a defined Crick-1 backend, a defined PyTorch / JAX / Triton fallback, a defined hyperscaler-cloud reference deployment, and a defined pharma-partner adoption pipeline.
+The table below maps CRICK's architecture against the ten most consequential biology AI ecosystems as of May 2026 — ranked by compute dependency and structural exposure to the matmul mismatch.
 
-### CRICK-DNA — long-context genomic foundation modeling
+| Lab / Platform | Primary biology workload | Compute substrate | Pair-tensor native | Biology-effective $/TFLOPS-eq-W | Structural overhead exposure |
+|----------------|--------------------------|-------------------|--------------------|----------------------------------|------------------------------|
+| **CRICK (Crick-1)** | Full central dogma: DNA → RNA → protein → cell | Crick-1 (pair-tensor-native, 7 hardware blocks) | ✅ Yes | **~$0.18** | **None — native** |
+| **Isomorphic Labs (IsoDDE)** | Drug design: protein-ligand, antibody-antigen, affinity | NVIDIA Blackwell + Google TPU (internal fleet, $600M Series A, 40% to compute) | ❌ No | ~$0.78 | **High** — IsoDDE's diffusion + pair-tensor core runs on matmul silicon; 2.3× over AF3 in accuracy, but at matmul overhead cost |
+| **Google DeepMind (AlphaFold 3)** | Protein structure, biomolecular interaction prediction | TPU v7 Ironwood (Google-internal) | ❌ No | ~$0.42 | **High** — every Pairformer block pays 4–6× overhead; 48-block depth compounds multiplicatively |
+| **Meta FAIR (ESM3 / ESMFold)** | Protein language modeling; single-sequence structure prediction at scale | NVIDIA H100/H200 fleet (Meta AI Research) | ❌ No | ~$0.78 | **Medium-High** — ESM3 is transformer-shaped (GEMM-friendly), but lacks pair-tensor; trades accuracy for speed via MSA removal |
+| **Arc Institute + NVIDIA (Evo 2)** | Genomic foundation model: 40B params, 1M DNA-base context, full tree of life | NVIDIA DGX / BioNeMo cloud; BioNeMo framework | ❌ No | ~$0.78 | **High** — Hyena/StripedHyena long-convolution runs as repeated GEMM; 5–10× overhead at 1M-context scale; infeasible on H100 at full 40B context |
+| **Recursion Pharmaceuticals (Phenom / BioHive-2)** | Phenomics, cellular imaging, target-to-candidate pipeline | BioHive-2 (NVIDIA-powered, Top 35 supercomputer); NVIDIA DGX Cloud; $50M NVIDIA investment | ❌ No | ~$0.78 | **Medium** — phenomics CNN workload is more GEMM-friendly; structure-prediction and mutational scanning at scale hit pair-tensor ceiling |
+| **Insilico Medicine (Nach01 / PandaOmics)** | End-to-end drug discovery; generative chemistry; target ID | Microsoft Azure (Maia 200 + Blackwell); Nach01 on Microsoft Discovery marketplace | ❌ No | ~$0.55–0.78 | **Medium-High** — generative chemistry and structure-based design hit diffusion + SE(3) overhead; Microsoft Azure compute at matmul rates |
+| **Ginkgo Bioworks + OpenAI (Autonomous Lab)** | Closed-loop autonomous experimentation; cell-free protein synthesis; synthetic biology | OpenAI GPT-5 (Azure compute); cloud-native robotic lab orchestration | ❌ No | ~$0.55–0.78 | **Low-Medium** — primary workload is LLM orchestration (matmul-native); biology-specific structure and design workloads inherit overhead when invoked |
+| **Roche / Genentech (AI Factory)** | Drug discovery, diagnostics, therapeutic design | 3,500+ Blackwell GPUs on-premises (NVIDIA AI Factory, launched March 2026) | ❌ No | ~$0.78 | **High** — largest announced pharma on-premise GPU footprint; fully matmul-era; entire AlphaFold 3 + diffusion workload at structural overhead |
+| **Chai Discovery (Chai-1 / Chai-2)** | Biomolecular structure prediction, biologics design; Eli Lilly mid-eight-figure annual access fee | Cloud GPU (AWS / Azure); NVIDIA Blackwell | ❌ No | ~$0.78 | **High** — Chai-1/2 architecture is pair-tensor-based (competitive with AF3); every Pairformer block pays the same 4–6× matmul overhead |
+| **Eli Lilly (TuneLab + NVIDIA co-innovation lab)** | Drug discovery as a service; $1B dataset; AI-directed robotic experimentation 24/7 | NVIDIA Vera Rubin + BioNeMo + Clara; $1B co-innovation lab in South San Francisco | ❌ No | ~$0.78 | **Very High** — $1B+ infrastructure commitment to matmul silicon for 24/7 biology compute; mutational scanning and structure generation at scale hit the full overhead stack |
 
-Hosts Evo 2 (40 B params, 1 M-token context, 9.3 T training nucleotides spanning bacteria, archaea, eukaryotes, viruses; *Nature* 2026), Evo, HyenaDNA, Nucleotide Transformer, Caduceus, Borzoi, Enformer, CodonFM (Arc + NVIDIA, 2026), DNABERT-2. Native HFE backend; Mode J operating mode. Workloads: promoter and enhancer identification, transcription-factor binding site prediction, splice site prediction, variant pathogenicity, whole-genome de novo design, regulatory grammar discovery, CRISPR guide design, host-strain engineering.
+### The Pattern
 
-### CRICK-RNA — sequence, structure, modification, design
-
-Hosts the canonical RNA stack:
-- **Foundation models** — RNA-FM, RiNALMo (650 M), AIDO.RNA (1.6 B), ERNIE-RNA, Uni-RNA, UTR-LM, CaLM, RNAGenesis, GenerRNA, RNAErnie.
-- **Secondary structure** — RNAfold, Mfold, LinearFold / LinearPartition, CONTRAfold, EternaFold, MXfold2, UFold, SPOT-RNA / SPOT-RNA2, DSRNAFold, Sincfold; pseudoknot-aware and probing-conditioned variants.
-- **Tertiary structure** — RhoFold+, NuFold, DRfold / DRfold2, trRosettaRNA, RoseTTAFoldNA, AlphaFold 3 / Boltz-2 / Chai-1 / Protenix / HelixFold3 (license-permitting), with optional FARFAR2 / SimRNA refinement.
-- **Inverse design** — gRNAde (SE(3)-equivariant 3D inverse design, ICLR 2025 spotlight, ribozyme-validated), RDesign, NA-MPNN, RNAGenesis design head, structure-to-sequence aptamer pipelines.
-- **Therapeutic RNA** — Optimus 5-Prime, UTailoR (*iScience* 2025), Saluki for half-life, CodonBERT / CaLM / CodonFM for ORF optimization, modified-nucleoside (Ψ, m¹Ψ, m⁵C) substitution, LNP-composition AI (D-MPNN over ionizable-lipid SMILES, protein-corona prediction with SHAP attribution).
-- **Splicing** — SpliceAI (*Cell* 2019), Pangolin (tissue-specific), SpliceTransformer (*Nat Commun* 2024), AbSplice, CADD-Splice, MMSplice / MTSplice.
-- **Epitranscriptome** — CHEUI for joint m⁶A + m⁵C from nanopore signal, m6ATM, m6Anet, EpiNano; DRACH-motif and writer/eraser/reader stack.
-- **circRNA** — ORNA, CirPure / CirPrecise, Clean-PIE engineered circularization; circRNA-vaccine and decoy-circRNA pipelines.
-- **CRISPR-Cas13** — RfxCas13d / CasRx, PspCas13b, hfCas13d / hfCas13X (high-fidelity), TIGER and DeepCas13 guide-design models, circular gRNA biostability.
-- **RNA–protein interactions** — ZHMolGraph, ZeRPI, GraphProt2, DeepCLIP, RBPNet, eCLIP / iCLIP / PAR-CLIP integration.
-- **RNA-targeting small molecules** — SMARTBind, RNAmigos2, RNAsmol, riboswitch-pocket screening, RIBOTAC scaffolds.
-- **Non-coding RNA** — lncRNA coding-potential and subcellular-localization, miRNA target prediction, piRNA / snoRNA / tRNA / snRNA tooling; **RNAcentral release 26** integration (45 M sequences, 52 expert databases, gene-level entries across 204 organisms).
-
-### CRICK-Protein — structure, complex, design
-
-AlphaFold 3 / Boltz-1 / Boltz-2 (Affinity Module) / Chai-1 / Protenix / HelixFold3 / RoseTTAFold All-Atom for prediction; RFdiffusion / RFdiffusion3 / FrameFlow / FoldFlow / Chroma for design; ESM3 for evolutionary-scale generative protein modeling; ProteinMPNN and LigandMPNN for sequence design; PocketGen and ESM3-fold-conditioning for binder design; AlphaMissense and EVE for variant pathogenicity. Native TAE + SFB + DDU backend; Modes H + I.
-
-### CRICK-Cell — virtual cells and perturbation
-
-scGPT (33 M cells), Geneformer, scFoundation, CellFM (100 M cells), Universal Cell Embeddings (UCE), GeneCompass, RegFormer, State (Arc 2025), Stack (Arc 2026), GEARS for graph-perturbation, RNA-velocity stack (scVelo, veloVI, VeloVAE, Dynamo, DeepVelo, RegVelo, cell2fate, PRESCIENT). Spatial transcriptomics (Visium / Xenium / MERSCOPE / Stereo-seq) and multi-omics integration. Native MMC backend for cell-type-specific epigenetic conditioning; cross-modal Mode H + Mode J operation.
-
-### CRICK-1 — silicon
-
-128 PTIUs on TSMC N2P; 220 B transistors; 873 MB SRAM; 384 GB HBM4 @ 12.8 TB/s; 4.0 TB/s Ethernet scale-up; 700 W TDP; full hardware-block manifest (TAE / SFB / DDU / HFE / SMEU / WCC / MMC / AAB / CM) detailed in the Crick-1 spec.
-
-### CRICK-IR — compiler
-
-MLIR dialect; PyTorch and JAX front-ends; Triton-compatible kernel emission; explicit pair-tensor and SE(3) frame IR types; col(F)/ker(F) tensor attributes; central-dogma pipeline lowering; ten operating modes (seven inherited from Banach-1 / Volder-1 plus H, I, J).
+Every competitor — from Isomorphic Labs' IsoDDE (the closest thing to an AlphaFold 4) to Roche's 3,500-GPU on-premise factory — runs its biology workloads on matmul-era silicon paying structural overheads of 2–100× per operation. None has a native pair-tensor substrate. None has a native SE(3) hardware block. None has hardware-native diffusion iteration. The architectural gap is not a gap in model quality. It is a gap in the substrate the model quality is paid for on.
 
 ---
 
-## Notes
+## Head-to-Head: CRICK vs. Closest Competitors
 
-A small number of technical and economic identifications that constrain the design and the business.
+### CRICK vs. Isomorphic Labs (IsoDDE)
 
-**N1.** The pair tensor is the universal intermediate of biology compute. Every modern structure-prediction architecture (AlphaFold 2/3, Boltz-1/2, Chai-1, Protenix, HelixFold3, RoseTTAFoldNA, RhoFold+) evolves it; every modern protein design architecture (RFdiffusion, RFdiffusion3, FrameFlow, FoldFlow, Chroma) refines noised versions of it; every modern virtual-cell model implicitly conditions cell-state representations on it via the embedded structure prior. Substrate identification: the cache, the systolic dataflow, and the IR type must be sized and shaped for the pair tensor.
+IsoDDE is the most accurate publicly disclosed drug design engine as of February 2026 — described by external researchers as an "AlphaFold 4 in effect." It outperforms AlphaFold 3 by 2.3× and Boltz-2 by 19.8× on antibody-antigen interface prediction in the hardest generalization bins.
 
-**N2.** Triangle inequality is the geometric backbone. Any predicted 3D structure must satisfy the triangle inequality on its pair-distance matrix. Triangle attention + triangle multiplication is the hardware enforcement; substrates that emulate this via general matmul pay a 4–6× compute penalty on every Pairformer block.
+**The catch:** Isomorphic Labs directed 40% of its $600M Series A to compute infrastructure expansion — all matmul silicon. IsoDDE's diffusion module and pair-tensor core run on the same Blackwell/TPU stack that pays the full 4–20× overhead per workload. An IsoDDE saturation mutational scan costs ~$40/scan on Blackwell. On Crick-1-class silicon it costs ~$0.50. Isomorphic's model accuracy advantage does not close the substrate economics gap.
 
-**N3.** SE(3) equivariance is exact at hardware level on Crick-1, approximate at software level on matmul-only substrates. The polynomial Taylor-series approximation of the rotation matrix on a Vector Processing Unit drifts by 10⁻⁴ to 10⁻⁶ per rotation; the CORDIC cascade is exact to the chosen iteration count.
+**Substrate verdict:** Isomorphic owns the model quality frontier. CRICK owns the unit economics frontier. These are orthogonal dimensions until 2028 — then they converge as matmul costs hit the board-level ceiling.
 
-**N4.** Diffusion sampling is fixed-point iteration. Each denoising step is a single Banach contraction toward the score-determined direction; 200–500 steps for AlphaFold 3, RFdiffusion3, and the SE(3)-flow-matching family. Anderson acceleration applies; the Contraction Monitor reports convergence; the DDU handles noise scheduling natively.
+### CRICK vs. Evo 2 (Arc Institute + NVIDIA)
 
-**N5.** Long-context Hyena is FFT-native, and FFT is a CORDIC operation by construction. The Hyena Filter Engine implements the long convolution as a butterfly-structured CORDIC cascade; 1-megabase context on a single chip; longer contexts chunk over the Ethernet fabric.
+Evo 2 is the most important genomic foundation model in existence: 40B parameters, 1M-token DNA context, 9.3 trillion training nucleotides, fully open-source. Its Hyena/StripedHyena architecture is sub-quadratic in sequence length — the correct algorithmic choice. It is running on the wrong substrate.
 
-**N6.** CRISPR is the Sherman-Morrison update on the genomic Fisher matrix. Saturation mutational scanning, base-editing optimization, off-target screening, allele-specific expression prediction, ClinVar variant annotation, and fine-resolution GWAS are all rank-one-update workloads. SMEU compresses 5,700-variant scans from ~47.5 GPU-hours to ~14 single-chip-minutes; the 80–100× ratio is the principal CRISPR-screening unit-economics driver.
+Evo 2 at 1M-context on NVIDIA H100: **infeasible** (insufficient memory). On GB300: ~95 seconds per sequence. On Hyena-native silicon (CRICK-1 class): **~18 seconds**. At 40B parameters and frontier training scale, the overhead is 5–10× and grows with context length. CRICK-DNA's open-source integration of Evo 2 routes Hyena blocks to the CORDIC-native hardware path that the model's architecture was algorithmically designed for.
 
-**N7.** The 64→20 surjection is the genome’s native error-correcting code, with 44 of 64 codons synonymous. The 6.0-bit-per-codon nominal information content reduces to ~4.32 bits of amino-acid-functional content; the remaining 28% is regulatory ker(F) (codon usage bias, tRNA-pool compatibility, mRNA folding constraints, immunogenicity profile). The Wobble Code Cache enables runtime-selectable col(F)-only inference (28% bandwidth saving) or full-codon inference for mRNA design.
+**Substrate verdict:** Evo 2's algorithm and CRICK's substrate are co-designed by the same underlying mathematics. The CRICK-DNA module is the native deployment target for Evo-class models.
 
-**N8.** The epigenome is heritable ker(F). Two cells with identical DNA (liver vs. neuron) differ in epigenetic configuration — methylation, histone marks, chromatin accessibility, 3D contact frequencies. Cell-type-specific genomic medicine is a joint (genome, epigenome) tensor workload; the Methylation Marker Cache holds the ker(F) on-chip with the col(F) accessible in HBM. No matmul-only substrate has the architectural separation; the MMC enables 10–50× the cell-type × individual × tissue throughput on cell-type-specific pharmacogenomics.
+### CRICK vs. Roche/Genentech AI Factory
 
-**N9.** Hardware lottery applies in both directions (Hooker, 2020). The matmul-era’s dominance is the path-dependent outcome of GEMM-optimized substrates winning the 2012–2025 decade; the next decade’s biology compute is a co-design opportunity. The risk symmetry: if NVIDIA’s Rubin or post-Rubin generations add 3D systolic-array extensions (the most natural matmul-side response to the pair-tensor identification), the workload-effective gap compresses. Crick-1’s design assumes 3–4 years of architectural lead time.
+Roche's March 2026 launch of its 3,500+ Blackwell GPU on-premise AI factory represents the largest announced pharma GPU footprint globally. It is a $1B+ commitment to matmul silicon for 24/7 biology compute — including AlphaFold 3 structure prediction, diffusion-based design, and saturation mutational scanning.
 
-**N10.** Eroom’s Law inversion is the strategic prize. Pharma R&D cost per FDA-approved drug has doubled every ~9 years for 70 years; AI-native biology compute is the principal mechanism with the structural capacity to invert that trend. The economic upper bound on biology AI compute spend is set by the ratio of pharma R&D productivity recovery to the marginal cost of compute; both numerators are large and both denominators are falling fast. Plausible 2030 biology AI compute TAM: $40–80 B/yr, with ecosystem-level rent capture (substrate + compiler + open-source models + clinical deployment partnerships) reaching ~20–30% of that.
+A single AlphaFold 3 frontier training run on that infrastructure costs $40–60M. On Crick-1-class silicon: $6–10M. A whole-genome CRISPR off-target screen at population scale costs ~$2.4M per run on Blackwell. On Crick-1: ~$30K. At 3,500 GPUs running 24/7 on biology workloads, the annual structural waste from the architectural mismatch is in the hundreds of millions. The Roche AI factory is not a competitor — it is the largest single illustration of the problem CRICK solves.
 
-**N11.** Open-source is the rational software posture. The closed-weights model (Anthropic / OpenAI / Google DeepMind / Isomorphic) is correct for general-purpose AI but wrong for biology AI: data provenance, reproducibility, regulatory transparency, and academic-clinical adoption all favor open weights and open IR. CRICK-RNA / DNA / Protein / Cell are MIT-licensed; the moat is substrate + compiler + ecosystem, not model weights.
-
-**N12.** The companion theoretical framework is load-bearing. Each chip and each module rests on a documented mathematical identification — Dirac Representation Hypothesis, Bregman Closure, Score Closure, Geometric Descent, Minkowski Representation Theory, Closed Future Cone, Operators Without Opponents, and the CAJAL feature-circuit-attribution architecture for mechanistic interpretability. The set is the substrate-algorithm-software co-design’s intellectual foundation.
+**Substrate verdict:** Roche's on-premise investment is the 2028 ceiling made visible in 2026. It is the first wave of pharma infrastructure that will require native-substrate migration as population-genomic-medicine workloads hit their unit-economic floor.
 
 ---
 
-## Predictions
+## The Economic Translation
 
-Eight wagers, each testable, each priced.
+| Workload | Matmul-era cost | CRICK native cost | Ratio |
+|----------|----------------|-------------------|-------|
+| AlphaFold 3 frontier training run | $40–60M | $6–10M | **6×** |
+| Saturation mutational scan (300-residue protein) | ~$40 / scan | ~$0.50 / scan | **80×** |
+| Whole-genome CRISPR off-target screen (1B guide RNAs) | ~$2.4M / run | ~$30K / run | **80×** |
+| 16K-chip cluster power (equivalent biology throughput) | ~60 MW | ~11.5 MW | **5×** |
+| Cell-type-specific pharmacogenomics at population scale | **Infeasible** | ~$200M one-time | **Unlocks** |
 
-**P1.** Pair-tensor-native silicon dominates biology workloads. 4–12× per-chip advantage on AlphaFold 3 / Boltz-2 / RFdiffusion3 / Evo 2 inference and training produces 3–5× cost reduction for pharma and AI-biotech compute pipelines by 2028. Top-5 AI-biotech labs adopt within 24 months of Crick-1 availability.
-
-**P2.** The Sherman-Morrison Edit Unit redefines CRISPR computational screening economics. Saturation mutational scanning moves from $40/scan to $0.50/scan. First FDA-cleared diagnostic incorporating whole-proteome saturation scanning approved by 2028.
-
-**P3.** The Methylation Marker Cache enables cell-type-specific genomic medicine at population scale. First commercial cell-type-specific pharmacogenomics product deployed by 2029.
-
-**P4.** The col(F)/ker(F) architectural separation becomes the standard pattern for biology compute. Future biology accelerators inherit the cache-level separation and extend it to additional ker(F) data structures (non-coding RNA regulation, 3D chromatin architecture, lineage-specific developmental marks).
-
-**P5.** The central-dogma compute pipeline becomes a unified compiler target. The current separation between genomic, RNA, structure, and virtual-cell foundation models is replaced by integrated CRICK-IR programs by 2030.
-
-**P6.** Hybrid clusters become the standard biology compute deployment. Crick-1 for biology, Volder-1 for geometric / hyperbolic, Banach-1 for the Euclidean transformer bulk, all on Ethernet-native scale-up.
-
-**P7.** The matmul-era biology compute substrate hits an economic ceiling by 2028. Pair tensor is not a matrix product; SE(3) equivariance is not a Euclidean operation; diffusion is not a single-pass forward; Hyena is not quadratic attention; Sherman-Morrison is not a full inference. The 3–12× emulation overhead becomes prohibitive at population-scale workload volume.
-
-**P8.** Eroom’s Law inverts in 2027–2029, attributable in the causal-attribution literature to AI-native biology compute. CRICK ecosystem captures 15–25% of the biology AI compute layer’s rent.
-
-The wagers fail diagnostically in two ways. First, if biology AI workload growth slows (P1, P2, P3 fail), Crick-1’s specialization is wasted and the chip reduces to a competent matmul accelerator at slightly-lower-than-peer FLOPs. Second, if matmul-era substrates ship efficient pair-tensor and triangle-attention extensions (NVIDIA Rubin or post-Rubin 3D systolic, TPU v8/v9 XLA custom kernels), the workload-effective gap compresses and the moat window shortens from 2026–2029 to 2026–2027. Both failure modes are publicly observable.
+The last row is the strategic prize: population-scale cell-type-specific pharmacogenomics is not a commercial product today because the unit economics do not close on matmul silicon. The CRICK native substrate makes it viable. This is the product category that does not exist — and will define the 2028–2032 personalized medicine market.
 
 ---
 
-## Sources
+## Market Setup
 
-Watson & Crick 1953 · Crick 1958 / 1966 / 1970 · Anfinsen 1973 · Doudna & Charpentier 2014 · Komor 2016 · Anzalone 2019 · Banach 1922 · Sherman & Morrison 1950 · Volder 1959 · Walther 1971 · Anderson 1965 · Hooker 2020 · Dao 2022 (FlashAttention) · Poli 2023 (Hyena) · Gu & Dao 2023 (Mamba) · Jumper 2021 (AlphaFold 2) · Abramson 2024 (AlphaFold 3) · Wohlwend 2024 (Boltz-1) · Boltz-2 2025 · Chai-1 2024 · Protenix 2025 · HelixFold3 2024 · Watson 2023 (RFdiffusion) · Butcher 2025 (RFdiffusion3) · Yim 2023 (FrameFlow) · FoldFlow 2023 · Hayes 2024 (ESM3) · Ingraham 2023 (Chroma) · Dauparas 2022 (ProteinMPNN) · Chen 2024 (RNA-FM) · Shen 2024 (RhoFold+) · Penić 2025 (RiNALMo) · AIDO.RNA 2024 · ERNIE-RNA 2024 · Joshi & Liò 2025 (gRNAde) · RNAGenesis 2024 · Jaganathan 2019 (SpliceAI) · Zeng & Li 2022 (Pangolin) · SpliceTransformer 2024 · CHEUI 2024 · m6ATM 2024 · UTailoR 2025 · Optimus 5-Prime · Saluki · Nguyen 2024 (Evo) · Brixi 2026 (Evo 2) · CodonFM 2026 · Cui 2024 (scGPT) · Theodoris 2023 (Geneformer) · CellFM 2025 · UCE · GeneCompass · State 2025 · Stack 2026 · Tahoe-100M · Bunne 2024 (Towards a Virtual Cell) · RNAcentral release 26 (2026) · Ren — CRICK / Banach-1 / Volder-1 / CAJAL / Dirac Representation Hypothesis / Bregman Closure / Score Closure / Geometric Descent / Minkowski Representation Theory / Closed Future Cone / Operators Without Opponents / Poincaré Is All You Need (2026).
+| Year | Frontier AI compute (global) | Biology AI share | Biology AI spend | Native-substrate addressable |
+|------|------------------------------|-----------------|-----------------|------------------------------|
+| 2025 | ~$200B | 6% | ~$12B | 0% |
+| 2026 | ~$320B | 8% | ~$26B | 5% |
+| 2027 | ~$500B | 11% | ~$55B | 15% |
+| 2028 | ~$700B | 14% | ~$98B | 30% |
+| 2029 | ~$880B | 16% | ~$140B | 45% |
+| 2030 | ~$1.05T | 17% | ~$180B | 55% |
+
+**2030 SAM:** ~$100B/yr  
+**Capture target:** 15–25% of SAM = **$15–25B/yr by 2030**
 
 ---
 
-## Closing
+## The CRICK Ecosystem
 
-The data was sequenced. The structure was extracted. The function was predicted. The cell was simulated. The substrate was matmul. The substrate becomes the pair tensor, the rotation, and the fixed point. The chip is the central dogma in silicon. The compiler is the central dogma in code. The software is the central dogma in open source. The strategy is the central dogma in capital.
+### Layer 1 — Crick-1 Silicon
 
-**CRICK is the ecosystem.**
+Pair-tensor-native compute substrate. Seven dedicated hardware blocks. Fundamental operation: iterative refinement of the N×N pairwise representation under geometric symmetry with diffusion-denoising integration.
+
+| | Crick-1 | NVIDIA GB300 | AWS Trainium3 | TPU v7 Ironwood |
+|--|---------|-------------|---------------|-----------------|
+| Biology-effective $/TFLOPS-eq-W | **~$0.18** | ~$0.78 | ~$0.35 | ~$0.42 |
+| On-chip SRAM | **873 MB** | ~120 MB | ~96 MB | ~256 MB |
+| HBM capacity | **384 GB HBM4** | 288 GB HBM3e | 144 GB HBM3e | 192 GB HBM3e |
+| HBM bandwidth | **12.8 TB/s** | 8 TB/s | 4.9 TB/s | 7.4 TB/s |
+| Native biology ops | **Yes (7 blocks)** | No | No | No |
+
+16K-chip cluster: **134 PFLOPS effective, 11.5 MW** — vs. ~60 MW for matmul-equivalent biology throughput.
+
+### Layer 2 — Chip Lineage
+
+- **Banach-1 (2026)** — fixed-point iteration as the architectural primitive. 12.3 PFLOPS FP4, 384 MB SRAM, 288 GB HBM3e.
+- **Volder-1 (2026)** — rotation-based arithmetic for exact geometric computation. 9.8 PFLOPS FP4-eq, 645 MB SRAM, 9.6 TB/s.
+- **Crick-1 (2026)** — pair-tensor iteration as the native biology operation. 8.2 PFLOPS FP4 pair-tensor, 873 MB SRAM, 384 GB HBM4, 12.8 TB/s.
+
+### Layer 3 — CRICK-IR: The Compiler
+
+Open compiler. Ingests PyTorch and JAX biology models — AlphaFold 3, Boltz-2, Evo 2, RFdiffusion3, State, Stack, scGPT. Routes each operation to the appropriate hardware block. Recognizes the full DNA → RNA → protein → structure → function pipeline as a single compilation target.
+
+This is the CUDA equivalent for biology: the developer flywheel that compounds into multi-year switching cost.
+
+### Layer 4 — Open-Source Stack
+
+- **CRICK-DNA** — Evo 2 (40B, 1M-token context), HyenaDNA, Nucleotide Transformer, Caduceus, Borzoi, Enformer, CodonFM
+- **CRICK-RNA** — RiNALMo (650M), AIDO.RNA (1.6B, SOTA on 24/26 RNA tasks), RNA-FM, RhoFold+, gRNAde (ICLR 2025 Spotlight)
+- **CRICK-Protein** — AlphaFold 3, Boltz-1/2, Chai-1, Protenix, HelixFold3, RFdiffusion3, FrameFlow, ESM3, ProteinMPNN
+- **CRICK-Cell** — scGPT (33M cells), State (Arc 2025), Stack (Arc 2026), Geneformer, CellFM (100M cells), GEARS, RNA velocity suite
+
+The open-source posture is rational, not altruistic. The moat is substrate, compiler, and ecosystem — not model weights. This is the Hugging Face × PyTorch × Linux pattern applied to biology.
+
+---
+
+## The 2028 Ceiling
+
+Three convergent constraints arrive simultaneously:
+
+**1. Workload share crosses the board-level threshold.**
+A 5× overhead on 6% of $200B is ~$60B in structural waste — absorbable inside R&D budgets. The same overhead on 14% of $700B is ~$490B. That is a capital allocation crisis.
+
+**2. Per-workload cost rigidity is architectural, not nodal.**
+TSMC N2 to N2P buys ~30% transistor density. It buys 0% reduction in architectural mismatch. After the crossover point, additional process-node generations widen the gap rather than close it.
+
+**3. The strategic-priority shift hardens substrate decisions.**
+The 2028–2029 cohort of FDA-cleared diagnostics, EMA-authorized therapeutics, and sovereign compute commitments (NHS, EU-1+ Million Genomes, NIH All of Us, Japan AMED, KAUST) sets the substrate base for the 2030s. Once a biology AI product enters clinical deployment at population scale, the substrate decision becomes a regulatory commitment. Switching cost rises to multi-year, multi-billion-dollar territory.
+
+---
+
+## Upstream Science: Why Now
+
+- **AlphaFold 2 (Nobel Prize 2024)** — protein structure prediction from sequence solved.
+- **AlphaFold 3 (*Nature*, May 2024)** — extended to all biomolecular interactions: protein-ligand, protein-RNA, protein-DNA, multi-chain.
+- **IsoDDE (Isomorphic Labs, February 2026)** — 2.3× over AlphaFold 3 on hardest generalization benchmarks; 50% accuracy on novel pockets vs. 23.3% for AF3. The first substantive accuracy step-change since AF3.
+- **Evo 2 (*Nature*, March 2026)** — 40B parameters, 1M DNA-base context, 9.3 trillion training nucleotides. The full central dogma in a single open-source foundation model.
+- **RFdiffusion3 (November 2025)** — de novo design extended to all-atom biomolecular complexes.
+- **State and Stack (Arc Institute, 2025–2026)** — first virtual cell foundation models on 100M-cell perturbation atlases. The cell is now a computational object.
+- **Karkada, Olah, Tegmark et al. (February 2026)** — proved analytically that the geometry of learned representations is forced by the symmetry of the training data. The biology AI workload is not arbitrary; its structure is mathematically determined.
+
+These are not incremental improvements. They are the scientific infrastructure that makes the biology compute decade commercially real.
+
+---
+
+## Adoption Roadmap
+
+| Milestone | Target | Signal |
+|-----------|--------|--------|
+| Crick-1 tape-out; CRICK-IR alpha; CRICK-RNA beta | 2026 Q3 | Design-win count: 3 |
+| Volume production; CRICK-IR 1.0; full open-source releases | 2027 H1 | Design-win count: 12 |
+| Matmul-era biology compute hits economic ceiling | 2028 | 30–40% of frontier biology training on Crick-1-class silicon |
+| First FDA-cleared diagnostic incorporating whole-proteome variant scanning | 2028 | P2 |
+| Cell-type-specific pharmacogenomics commercial deployment | 2029 | P3 |
+| Integrated central-dogma compiler target as default biology AI deployment | 2030 | P5 |
+
+---
+
+## Falsifiable Predictions
+
+| ID | Prediction | Failure signal |
+|----|------------|----------------|
+| P1 | Pair-tensor-native silicon produces 3–5× cost reduction for pharma and AI-biotech pipelines by 2028 | Ratio compresses below 2× before end-2027 (Rubin-class extensions) |
+| P2 | Saturation mutational scanning moves from $40/scan to $0.50/scan; first FDA-cleared diagnostic by 2028 | No FDA clearance by end-2028 |
+| P3 | First commercial cell-type-specific pharmacogenomics product by 2029 | Unit cost remains above commercial pricing floor |
+| P4 | col(F)/ker(F) architectural separation becomes the standard pattern for biology compute substrate design | Matmul substrates close the gap architecturally |
+| P5 | Separate genomic, RNA, structure, and cell pipelines replaced by integrated single-compiler programs by 2030 | CRICK-IR developer adoption below 20% of frontier biology labs |
+| P6 | Hybrid clusters (biology-native + geometric + general-purpose GPU) become the standard by 2029 | Substrate-fragmentation index plateaus at 2026 levels |
+| P7 | **Matmul-era biology compute hits its economic ceiling by 2028** | Biology AI share plateaus below 8% through 2027 |
+| P8 | Eroom's Law inverts 2027–2029; CRICK ecosystem captures 15–25% of biology AI compute rent | Biology drug approval rate fails to accelerate by 2029 |
+
+---
+
+## The Moat Structure
+
+**1. Substrate-algorithm co-design** — Pair tensor + SE(3) + diffusion + long-context genomics + rank-one edit mapped to seven hardware blocks. Time to replicate by NVIDIA Rubin-class: 3–4 years. Moat window: 2026–2029.
+
+**2. Compiler / IR adoption** — CRICK-IR's pair tensor and SE(3) frame as first-class compiler constructs. Once a biology pipeline is compiled to CRICK-IR, the switching cost is a compiler rewrite, not a chip swap.
+
+**3. Open-source ecosystem gravity** — CRICK-RNA / DNA / Protein / Cell as the canonical, benchmarked deployment of every frontier biology model. Developer surplus leads to benchmark control.
+
+**4. Data and benchmark partnerships** — RNAcentral (release 26: 45M sequences, 52 expert databases, 204 organisms), Rfam, PDB, AlphaFold Protein Structure Database, Tahoe-100M, ENCODE, Human Cell Atlas.
+
+**5. Clinical deployment commitments** — Co-development with top-5 pharma, top-5 AI biotech, and 2–3 hyperscalers. Design wins in NHS, EU-1+ Million Genomes, Japan AMED, KAUST, NIH All of Us. Each is a 5–10-year commitment defended by clinical and regulatory switching cost.
+
+---
+
+## The Competitive Risk
+
+NVIDIA Rubin or post-Rubin generations could add dedicated pair-tensor extensions, compressing the advantage from 4–12× to 2–4× and narrowing the moat window from 2026–2029 to 2026–2027. This is publicly observable. The window must be built and defended before the matmul ecosystem's defensive response ships.
+
+The leading indicator is already visible: Anthropic's May 2026 five-substrate portfolio (Trainium3, TPU Ironwood, Blackwell, CoreWeave-Blackwell, Maia 200 in negotiation) demonstrates that frontier laboratories running at $30B+ annual compute spend are already buying the right substrate for the right workload regardless of single-vendor commitments. Biology workloads — with their five distinct structural mismatches — are the natural next layer of specialization.
+
+---
+
+## Summary
+
+The matmul era made language model training, image generation, and reasoning feasible at frontier scale. It did not make biology compute feasible at frontier scale — because biology compute is not language compute. The five structural mismatches are architectural. They compound multiplicatively. They grow in absolute cost as biology's share of frontier compute grows. They will not be resolved by the next process node or the next software optimization.
+
+The exit is a substrate designed for the workload. The compiler that routes biology workloads to it. The open-source stack that gives developers a reason to stay.
+
+The economic prize is $100B addressable by 2030. The capture rate is 15–25%.
+
+**CRICK is that ecosystem.**
+
+---
+
+*Compiled May 2026. Substrate specifications sourced from published product disclosures. Scientific citations reference peer-reviewed publications and publicly available preprints. Financial projections are scenario estimates.*
